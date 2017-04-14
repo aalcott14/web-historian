@@ -32,13 +32,15 @@ describe('server', function() {
         var fixturePath = archive.paths.archivedSites + '/' + fixtureName;
 
         // Create or clear the file.
+        console.log('Before opening file');
         var fd = fs.openSync(fixturePath, 'w');
+        console.log('After opening file');
         fs.writeSync(fd, 'google');
         fs.closeSync(fd);
 
         // Write data to the file.
         fs.writeFileSync(fixturePath, 'google');
-
+        console.log('Before request');
         request
           .get('/' + fixtureName)
           .expect(200, /google/, function (err) {
@@ -111,7 +113,7 @@ describe('archive helpers', function() {
 
   describe('#addUrlToList', function () {
     it('should add a url to the list', function (done) {
-      var urlArray = ['example1.com', 'example2.com'];
+      var urlArray = ['example1.com', 'example2.com\n'];
       fs.writeFileSync(archive.paths.list, urlArray.join('\n'));
 
       archive.addUrlToList('someurl.com', function () {
